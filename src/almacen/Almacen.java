@@ -7,6 +7,7 @@ package almacen;
 import becker.robots.*;
 //import java.lang.Object;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 /**
  *
@@ -19,22 +20,31 @@ public class Almacen {
     private Estante estantes[];
     private Empleado empleadosAlmacen[];
     private Empleado empleadosZonaEnvio[];
+    private ArrayList<Almacenar> almacenamiento;
+    private SolicitarPedido pedido;
+    
     public Almacen(Robot drive[], Estante estantes[], Empleado empleadosAlmacen[], Empleado empleadosZonaEnvio[]){
         this.drive=drive;
         this.estantes=estantes;
         this.empleadosAlmacen=empleadosAlmacen;
         this.empleadosZonaEnvio=empleadosZonaEnvio;
+        this.almacenamiento=new ArrayList<>();
     }
     
-    public boolean almacenarProductos(Producto productos[], int empleado){
-        int productosNoAlmacenados=productos.length;
-        for(int i=0; (i<7)&&(productosNoAlmacenados>0); i++){
+    /*public boolean almacenarProductos(Producto productos[], int empleado){ //
+        int productosNoAlmacenados=productos.length; //Se mira cuantos productos no han sido almacenados, que es la cantidad de productos que se pasn
+        
+        for(int i=0; (i<10)&&(productosNoAlmacenados>0); i++){ //cada estante tiene 3 cajas con 7 espacios para almacenar productos
+                                                     //Es decir, cada estante tiene 21 espacios
         if (estantes[i].getEspaciosDisponibles()>0){
-            moverVariasVeces(i, 13-drive[i].getAvenue());
-            drive[i].pickThing();
-            turnTwice(i);
-            moverVariasVeces(i, drive[i].getAvenue()-empleadosAlmacen[empleado].getAvenue());
-            turnRight(i);
+          //  moverVariasVeces(i, 13-drive[i].getAvenue());
+           // drive[i].pickThing();
+           // turnTwice(i);
+           // moverVariasVeces(i, drive[i].getAvenue()-empleadosAlmacen[empleado].getAvenue());
+           // turnRight(i);
+            moverVariasVeces(i, empleadosAlmacen[empleado].getAvenue()-drive[i].getAvenue());
+            drive[i].turnLeft();
+            
             int movimientosVerticales=drive[i].getStreet()-empleadosAlmacen[empleado].getStreet()-1;
             moverVariasVeces(i, movimientosVerticales);
             productosNoAlmacenados=estantes[i].llenarCajas(productosNoAlmacenados, productos.length-productosNoAlmacenados, productos);
@@ -42,10 +52,12 @@ public class Almacen {
             drive[i].move();
             turnRight(i);
             moverVariasVeces(i, movimientosVerticales);
-            drive[i].turnLeft();
-            moverVariasVeces(i, 13-drive[i].getAvenue());
-            drive[i].putThing();
-            turnTwice(i);
+            //drive[i].turnLeft();
+            
+            turnRight(i);
+            //moverVariasVeces(i, 13-drive[i].getAvenue());
+            //drive[i].putThing();
+            //turnTwice(i);
             while(drive[i].frontIsClear()){
                 drive[i].move();
             }
@@ -56,6 +68,9 @@ public class Almacen {
         if (productosNoAlmacenados>0){
          for(int i=7; (i<10)&&(productosNoAlmacenados>0); i++){
           if (estantes[i].getEspaciosDisponibles()>0){
+              
+              System.out.println("Esto esta pasando");
+              
             drive[i-7].move();
             turnRight(i-7);
             int movimientosInicialesEnY=(i+4)-drive[i-7].getStreet();
@@ -92,11 +107,11 @@ public class Almacen {
         return false;
     } else return true;
     }
-    
-        public boolean solicitarPedido(String nombreProducto, int cantidad, int empleado, String cliente){
+    */
+        /*public boolean solicitarPedido(String nombreProducto, int cantidad, int empleado, String cliente){
             //función para buscar el producto pedido
             Producto productoSolicitado=null;
-            int posicionArray=0, productosExistentes=0;
+            int posicionArray=0, productosExistentes=0; //La variable productos existentes mira cuantos productos del que pidieron hay.
             int estantes_array[]= new int[210]; //210 es la cantidad máxima de productos
             for(int a=0; a<210; a++){
                 estantes_array[a]=-1; //permite saber qué espacios del arreglo no se llenaron
@@ -129,40 +144,54 @@ public class Almacen {
             System.out.println("Hasta aqui llega la funcion");
             //System.out.println(productosExistentes);
             
-            if(productosExistentes<cantidad){//Significa que no se encontraron productos o se encontraron muy pocos
+            if(productosExistentes<cantidad){//Significa que no se encontraron productos o se encontraron menos de los requeridos
                 return false;
             } else
             
             System.out.println("Antes de mover a karel");
           //  System.out.println("Imprimiendo array de estantes: ");
             
-            /*for(int w=0; estantes_array[w]!=-1; w++){
+            for(int w=0; estantes_array[w]!=-1; w++){
                 System.out.println(estantes_array[w]);
-            }*/
+            }
             int productosPorSacar=cantidad;
+            
             for(int c=0; ((estantes_array[c]!=-1) && (productosPorSacar>0 && c<10)); c++){//c es el estante del cual se están extrayendo productos
                 
                 
             int randomRobot= (int)(Math.random()*6);//Escoge un robot random para llevar el pedido
             drive[randomRobot].move();
+            
+            
             boolean indicadorPosicion=estantes_array[c]+4<drive[randomRobot].getStreet();
-            if(indicadorPosicion){
-                drive[randomRobot].turnLeft();
-            } else {
-            turnRight(randomRobot); //(c+4) es la "street" del estante c
-            }
+    
+            //Desde aqui quitado
+            //if(indicadorPosicion){
+            //    drive[randomRobot].turnLeft();
+            //} else {
+            //turnRight(randomRobot); //(c+4) es la "street" del estante c
+            //}
+            // Hasta aqui quitado - Ni para arriba ni para abajo
+            
             int movimientosInicialesEnY=Math.abs(((estantes_array[c])+4)-drive[randomRobot].getStreet()); //Street horizontales, avenue verticales
-            moverVariasVeces(randomRobot, movimientosInicialesEnY);
-            if(indicadorPosicion){
-                turnRight(randomRobot);
-            } else{
-            drive[randomRobot].turnLeft();
-            }
-            moverVariasVeces(randomRobot, 13-drive[randomRobot].getAvenue());
-            drive[randomRobot].pickThing();
-            turnTwice(randomRobot);
-            moverVariasVeces(randomRobot, 6);
-            drive[randomRobot].turnLeft();
+            //moverVariasVeces(randomRobot, movimientosInicialesEnY);
+            //Desde aqui quitado
+            //if(indicadorPosicion){
+              //  turnRight(randomRobot);
+            //} else{
+            //drive[randomRobot].turnLeft();
+            //}//Hasta aqui quitado
+            //moverVariasVeces(randomRobot, 13-drive[randomRobot].getAvenue());
+            //drive[randomRobot].pickThing();
+            //turnTwice(randomRobot);
+            //moverVariasVeces(randomRobot, 6);
+            //drive[randomRobot].turnLeft();
+            
+            moverVariasVeces(randomRobot, 5);
+            turnRight(randomRobot);
+            
+            int movimientosY=empleadosZonaEnvio[empleado].getStreet()-drive[randomRobot].getStreet()-1;
+            
             moverVariasVeces(randomRobot, empleadosZonaEnvio[empleado].getStreet()-drive[randomRobot].getStreet()-1);
             if(empleadosZonaEnvio[empleado].getAvenue()>drive[randomRobot].getAvenue()){
                 drive[randomRobot].turnLeft();
@@ -185,26 +214,33 @@ public class Almacen {
                 drive[randomRobot].turnLeft();
             }
             
-            moverVariasVeces(randomRobot, drive[randomRobot].getStreet()-(estantes_array[c]+4));
-            turnRight(randomRobot);
+           // moverVariasVeces(randomRobot, drive[randomRobot].getStreet()-(estantes_array[c]+4));
+           
+           moverVariasVeces(randomRobot, movimientosY);
+           
+           //Desde aqui quitado
+            //turnRight(randomRobot);
             
-            while(drive[randomRobot].frontIsClear()){
-                drive[randomRobot].move();
-            }
-            drive[randomRobot].putThing();
-            turnTwice(randomRobot);
-            drive[randomRobot].move();
-            if(indicadorPosicion){
-                drive[randomRobot].turnLeft();
-            } else {
-            turnRight(randomRobot);
-            }
-            moverVariasVeces(randomRobot, movimientosInicialesEnY);
-            if(indicadorPosicion){
-                turnRight(randomRobot);
-            } else{
+            //while(drive[randomRobot].frontIsClear()){
+              //  drive[randomRobot].move();
+            //}
+            //drive[randomRobot].putThing();
+            //turnTwice(randomRobot);
+            //drive[randomRobot].move();
+            //if(indicadorPosicion){
+              //  drive[randomRobot].turnLeft();
+            //} else {
+            //turnRight(randomRobot);
+            //}
+            //moverVariasVeces(randomRobot, movimientosInicialesEnY);
+            //if(indicadorPosicion){
+              //  turnRight(randomRobot);
+            //} else{
+            //drive[randomRobot].turnLeft();
+            //}
+           //Hasta aqui quitado
+            
             drive[randomRobot].turnLeft();
-            }
             while(drive[randomRobot].frontIsClear()){
                 drive[randomRobot].move();
             }
@@ -216,14 +252,14 @@ public class Almacen {
             Pedido pedido=new Pedido(cliente, cantidad, productoSolicitado);
             pedido.generarFactura();            
             return true;
-        }
+        }*/
         
         
 	public static void main (String[] args){
             Bogota = new City("Field.txt");
 	    Bogota.showThingCounts(true);
 
-           Robot drive[] = new Robot[7];
+           Robot drive[] = new Robot[10];
            drive[0] = new Robot(Bogota,4, 1, Direction.EAST);
            drive[1] = new Robot(Bogota,5, 1, Direction.EAST);
            drive[2] = new Robot(Bogota,6, 1, Direction.EAST);
@@ -231,6 +267,9 @@ public class Almacen {
            drive[4] = new Robot(Bogota,8, 1, Direction.EAST);
            drive[5] = new Robot(Bogota,9, 1, Direction.EAST);
            drive[6] = new Robot(Bogota,10, 1, Direction.EAST);
+           drive[7] = new Robot(Bogota,11, 1, Direction.EAST);
+           drive[8] = new Robot(Bogota,12, 1, Direction.EAST);
+           drive[9] = new Robot(Bogota,13, 1, Direction.EAST);
            
            Producto productos[][]=new Producto[30][7];
            
@@ -287,40 +326,56 @@ public class Almacen {
         
          Almacen a1=new Almacen(drive, estantes, empleadosAlmacen, empleadosZonaEnvio);
          
-         Producto computador[]=new Producto[3];
+         Producto computador[]=new Producto[20];
          computador[0]=new Producto("hp", 789);
          computador[1]=new Producto("lg", 789);
          computador[2]=new Producto("samsung", 789);
          
+         Producto televisor[]=new Producto[6];
+         televisor[0]=new Producto("samsung", 554);
+         televisor[1]=new Producto("challenger", 554);
+         televisor[2]=new Producto("tvShow", 554);
          
          
-         if(a1.almacenarProductos(computador, 3)){ //almacena los productos del arreglo computador por el empleado 3
+         /*if(a1.almacenarProductos(computador, 3)){ //almacena los productos del arreglo computador por el empleado 3
              System.out.println("Productos almacenados: " + computador.length);
          } else{
              System.out.println("Se ha presentado un error al almacenar los productos. ");
-         }
+         }*/
+         Almacenar alm1=new Almacenar(drive, computador, estantes, empleadosAlmacen, 3);
+         alm1.start();
+         
+         Almacenar alm2=new Almacenar(drive, televisor, estantes, empleadosAlmacen, 3);
+         //alm2.start(); //Cuando se realiza esto, la funcion ya no sirve
+     
 
-         if(a1.solicitarPedido("celular", 28, 4, "Marielito")){
+         
+         SolicitarPedido ped1=new SolicitarPedido(estantes, 28, drive, "Marielito", "celular", empleadosZonaEnvio, 4);
+         ped1.start();
+         
+         /*if(a1.solicitarPedido("celular", 28, 4, "Marielito")){
+             
              System.out.println("Pedido solicitado.");
          } else {
              System.out.println("Se ha presentado un error al solicitar el pedido.");
-         }
+         }*/
         }
         
         
         public void turnTwice(int n){
-            if((n>=0)&&(n<7))
+
+            if((n>=0)&&(n<10))
             drive[n].turnLeft();
             drive[n].turnLeft();
         }
         public void turnRight(int n){
-            if((n>=0)&&(n<7))
+            if((n>=0)&&(n<10))
             drive[n].turnLeft();
             drive[n].turnLeft();
             drive[n].turnLeft();
         }
-        public void moverVariasVeces(int n, int m){
-            if((n>=0)&&(n<7)){
+        public void moverVariasVeces(int n, int m){ //Le ordena al Robot numero n que se mueva m veces
+            if((n>=0)&&(n<10)){
             for(int i=0; i<m; i++){
                 drive[n].move();
             }

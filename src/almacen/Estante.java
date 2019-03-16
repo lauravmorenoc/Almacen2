@@ -7,7 +7,7 @@ package almacen;
 import becker.robots.*;
 /**
  *
- * @author Hernan Quiroga
+ * @author Laura
  */
 public class Estante {
     private Thing thing;

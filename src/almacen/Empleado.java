@@ -14,11 +14,13 @@ public class Empleado {
     private Thing thing;
     private int street;
     private int avenue;
+    private int robotQueue;
 
     public Empleado(Thing thing, int street, int avenue) {
         this.thing = thing;
         this.street = street;
         this.avenue = avenue;
+        robotQueue=0;
     }
 
     public Thing getThing() {
@@ -44,4 +46,13 @@ public class Empleado {
     public void setAvenue(int avenue) {
         this.avenue = avenue;
     }
+
+    public int getRobotQueue() {
+        return robotQueue;
+    }
+
+    public void setRobotQueue(int robotQueue) {
+        this.robotQueue = robotQueue;
+    }
+    
 }
