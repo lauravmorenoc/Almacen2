@@ -114,18 +114,6 @@ public class Almacen {
          televisor[1]=new Producto("challenger", 554);
          televisor[2]=new Producto("tvShow", 554);
          
-         
-         /*if(a1.almacenarProductos(computador, 3)){ //almacena los productos del arreglo computador por el empleado 3
-             System.out.println("Productos almacenados: " + computador.length);
-         } else{
-             System.out.println("Se ha presentado un error al almacenar los productos. ");
-         }*/
-         //Almacenar alm1=new Almacenar(drive, computador, estantes, empleadosAlmacen, 3);
-         //alm1.start();
-         
-         //Almacenar alm2=new Almacenar(drive, televisor, estantes, empleadosAlmacen, 3);
-         //alm2.start(); //Cuando se realiza esto, la funcion ya no sirve
-         
          Producto[] producto;
          boolean open=true;
          
@@ -186,18 +174,6 @@ public class Almacen {
                     JOptionPane.showMessageDialog(null,"Intente de nuevo mas tarde");
             }
          }
-
-         
-         //SolicitarPedido ped1=new SolicitarPedido(estantes, 28, drive, "Marielito", "celular", empleadosZonaEnvio, 4);
-         //ped1.start();
-         
-         /*if(a1.solicitarPedido("celular", 28, 4, "Marielito")){
-             
-             System.out.println("Pedido solicitado.");
-         } else {
-             System.out.println("Se ha presentado un error al solicitar el pedido.");
-         }*/
-        }
         
         
         public void turnTwice(int n){
