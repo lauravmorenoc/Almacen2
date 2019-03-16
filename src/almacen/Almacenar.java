@@ -8,6 +8,7 @@ package almacen;
 import becker.robots.Robot;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -45,6 +46,8 @@ public class Almacenar extends Thread{
     
     @Override
     public void run (){ //
+        
+        JOptionPane.showMessageDialog(null,"Efectuando operacion, presione START en el field para ver proceso");
         calledTimes++;
         
         int productosNoAlmacenados=productos.length; //Se mira cuantos productos no han sido almacenados, que es la cantidad de productos que se pasn
@@ -53,8 +56,20 @@ public class Almacenar extends Thread{
                                                      //Es decir, cada estante tiene 21 espacios
         
         
-        int n=calledTimes-1; //Se usa para saber qué robot usar  
+       // int n=(int)(Math.random()*9); //Se usa para saber qué robot usar  
+       int n=i;
+        /*for(int a=0; a<10; a++){
+            if(n==robotsInUse[a]){
+                n=(int)(Math.random()*9);
+            }
+        }
         
+        if(calledTimes<11){
+        robotsInUse[calledTimes-1]=n;
+        } else {
+            calledTimes=0;
+            robotsInUse[calledTimes]=n;
+        }*/
         
         if (estantes[i].getEspaciosDisponibles()>0){
           //  moverVariasVeces(i, 13-drive[i].getAvenue());
@@ -88,8 +103,10 @@ public class Almacenar extends Thread{
                 if((drive[n].getStreet()-3)==empleadosAlmacen[empleado].getRobotQueue()){
                     
                 } else{
+                    if(drive[n].frontIsClear()){
                     drive[n].move();
                     auxiliarMov--;
+                    }
                 }
             }
             

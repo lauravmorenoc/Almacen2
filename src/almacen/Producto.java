@@ -13,6 +13,9 @@ public class Producto {
     private String tipo; //libro, electrodoméstico, juguete, ropa, joyas
     private double precio;
 
+    public Producto() {
+    }
+    
     public Producto(String tipo, double precio) {
         this.tipo = tipo;
         this.precio = precio;

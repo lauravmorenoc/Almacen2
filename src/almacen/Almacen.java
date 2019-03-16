@@ -9,6 +9,7 @@ import becker.robots.*;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Gloria
@@ -342,16 +343,76 @@ public class Almacen {
          } else{
              System.out.println("Se ha presentado un error al almacenar los productos. ");
          }*/
-         Almacenar alm1=new Almacenar(drive, computador, estantes, empleadosAlmacen, 3);
-         alm1.start();
+         //Almacenar alm1=new Almacenar(drive, computador, estantes, empleadosAlmacen, 3);
+         //alm1.start();
          
-         Almacenar alm2=new Almacenar(drive, televisor, estantes, empleadosAlmacen, 3);
+         //Almacenar alm2=new Almacenar(drive, televisor, estantes, empleadosAlmacen, 3);
          //alm2.start(); //Cuando se realiza esto, la funcion ya no sirve
-     
+         
+         Producto[] producto;
+         boolean open=true;
+         
+         while(open){
+         
+         int a=Integer.parseInt(JOptionPane.showInputDialog("¿Qué desea hacer?: "
+                    + "1 => Almacenar productos, "
+                    + "2 => Solicitar pedido, "
+                    + "3 => Terminar"));
+            switch (a){
+                case 1: 
+                    int b=Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos productos desea almacenar?: "));
+                    
+                    if(b>21){
+                        JOptionPane.showMessageDialog(null,"Intente con un numero menor de productos");
+                    } else{
+                        producto=new Producto[b];
+                        
+                        
+                        for(int z=0; z<b; z++){
+                            producto[z]=new Producto();
+                            String marca=JOptionPane.showInputDialog(null, "Introduzca la marca del producto no. " + z+1);
+                            producto[z].setTipo(marca);
+                            double precio=Integer.parseInt(JOptionPane.showInputDialog("Igrese precio del producto no. " + z));
+                            producto[z].setPrecio(precio);
+                        }
+                        
+                        int randomEmpleado=(int)(Math.random()*4);
+                        
+                        Almacenar alm1=new Almacenar(drive, producto, estantes, empleadosAlmacen, randomEmpleado);
+                        alm1.start();
+                    }
+                    
+                    break;
+                case 2:
+                    
+                    int cantidad=Integer.parseInt(JOptionPane.showInputDialog("Igrese cantidad de productos a adquirir"));
+                    String marca=JOptionPane.showInputDialog(null, "Introduzca el tipo de producto");
+                    String cliente=JOptionPane.showInputDialog(null, "Introduzca el nombre del cliente");
+                    int randomEmpleado=(int)(Math.random()*4);
+                    
+                    if(cantidad>30){
+                        JOptionPane.showMessageDialog(null,"Intente con un numero menor de productos");
+                    }else{
+                    
+                    SolicitarPedido ped1=new SolicitarPedido(estantes, cantidad, drive, cliente, marca, empleadosZonaEnvio, 4);
+                    ped1.start();
+                    }
+                    
+                    break;
+                    
+                case 3:
+                    JOptionPane.showMessageDialog(null,"Ha terminado la operacion. ");
+                    open=false;
+                    break;
+                    
+                default:
+                    JOptionPane.showMessageDialog(null,"Intente de nuevo mas tarde");
+            }
+         }
 
          
-         SolicitarPedido ped1=new SolicitarPedido(estantes, 28, drive, "Marielito", "celular", empleadosZonaEnvio, 4);
-         ped1.start();
+         //SolicitarPedido ped1=new SolicitarPedido(estantes, 28, drive, "Marielito", "celular", empleadosZonaEnvio, 4);
+         //ped1.start();
          
          /*if(a1.solicitarPedido("celular", 28, 4, "Marielito")){
              

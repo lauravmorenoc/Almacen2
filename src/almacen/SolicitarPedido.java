@@ -6,6 +6,7 @@
 package almacen;
 
 import becker.robots.Robot;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -39,6 +40,7 @@ public class SolicitarPedido extends Thread{
     
     @Override
     public void run(){
+        JOptionPane.showMessageDialog(null,"Efectuando operacion, presione START en el field para ver proceso");
             //función para buscar el producto pedido
             Producto productoSolicitado=null;
             int posicionArray=0, productosExistentes=0; //La variable productos existentes mira cuantos productos del que pidieron hay.
@@ -76,7 +78,7 @@ public class SolicitarPedido extends Thread{
             
             if(productosExistentes<cantidad){//Significa que no se encontraron productos o se encontraron menos de los requeridos
                 System.out.println("No se encontraron productos o se encontraron menos de los requeridos");
-            } else
+            } else{
             
             System.out.println("Antes de mover a karel");
           //  System.out.println("Imprimiendo array de estantes: ");
@@ -183,6 +185,7 @@ public class SolicitarPedido extends Thread{
             Pedido pedido=new Pedido(cliente, cantidad, productoSolicitado);
             pedido.generarFactura();     
             System.out.println("Pedido hecho.");
+            }
     }
     
     public void turnTwice(int n){
